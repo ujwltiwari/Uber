@@ -1,0 +1,60 @@
+# Node.js dependencies
+node_modules/
+npm-debug.log
+yarn-debug.log
+yarn-error.log
+package-lock.json
+yarn.lock
+
+# Environment variables
+.env
+.env.local
+.env.development
+.env.production
+.env.test
+
+# Logs & Runtime files
+logs/
+*.log
+*.out
+*.pid
+*.seed
+*.gz
+pids/
+*.sock
+*.swp
+
+# Database & Cache
+dump.rdb
+*.sqlite
+*.sqlite3
+*.log
+*.ldb
+.mongod.lock
+
+# Build & Dist files
+dist/
+build/
+.cache/
+.next/
+out/
+.vite/
+.vite-cache/
+
+# React/Vite/Next.js
+.DS_Store
+.eslintcache
+coverage/
+*.pem
+*.crt
+*.key
+
+# Editor & OS files
+.vscode/
+.idea/
+*.sublime-workspace
+Thumbs.db
+*.iml
+
+# Static exports
+export/
