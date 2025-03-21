@@ -4,6 +4,7 @@ const express = require("express");
 const cors = require("cors");
 const connectToDB = require("./db/db");
 const app = express();
+const errorHandler = require("./utils/errorHandler");
 // Route Imports
 const userRoutes = require("./routes/user.route");
 
@@ -18,5 +19,9 @@ app.get("/", (req, res) => {
 });
 
 app.use("/users", userRoutes);
+
+/* Always should be below every route declaration
+   Handle the error code & pass the error efficiently */
+app.use(errorHandler);
 
 module.exports = app;
