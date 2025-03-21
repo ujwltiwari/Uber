@@ -36,6 +36,7 @@ process.on("uncaughtException", (err) => {
 
 process.on("unhandledRejection", (reason, promise) => {
   console.error("Unhandled Rejection:", reason.message);
-  // process.exit(1);
+  process.exit(1);
 });
+
 module.exports = errorHandler;

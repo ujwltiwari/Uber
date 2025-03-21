@@ -1,39 +1,43 @@
-const express = require("express");
-const userModel = require("../models/user.model");
-const router = express.Router();
-const { body } = require("express-validator");
-const userController = require("../controllers/user.controller");
+const express = require('express')
+const userModel = require('../models/user.model')
+const router = express.Router()
+const { body } = require('express-validator')
+const userController = require('../controllers/user.controller')
+const authMiddleware = require('../middlewares/auth.middleware')
 
-router.get("/", async (req, res) => {
-  const users = userModel.find();
-  return res.status(200).json(users);
-});
+router.get('/', async (req, res) => {
+  const users = userModel.find()
+  return res.status(200).json(users)
+})
 
 //User Registration Route
 router.post(
-  "/register",
+  '/register',
   [
-    body("email").isEmail().withMessage("Invalid Email"),
-    body("fullname.firstname")
+    body('email').isEmail().withMessage('Invalid Email'),
+    body('fullname.firstname')
       .isLength({ min: 3 })
-      .withMessage("First name must be at least 3 characters long"),
-    body("password")
+      .withMessage('First name must be at least 3 characters long'),
+    body('password')
       .isLength({ min: 6 })
-      .withMessage("Password must be at least 6 characters long"),
+      .withMessage('Password must be at least 6 characters long'),
   ],
-  userController.registerUser,
-);
+  userController.registerUser
+)
 
 //User Login
 router.post(
-  "/login",
+  '/login',
   [
-    body("email").isEmail().withMessage("Invalid Email"),
-    body("password")
+    body('email').isEmail().withMessage('Invalid Email'),
+    body('password')
       .isLength({ min: 6 })
-      .withMessage("Password must be at least 6 characters long"),
+      .withMessage('Password must be at least 6 characters long'),
   ],
-  userController.loginUser,
-);
+  userController.loginUser
+)
 
-module.exports = router;
+router.get('/profile', authMiddleware.authUser, userController.getUserProfile)
+router.get('/logout', authMiddleware.authUser, userController.logout)
+
+module.exports = router

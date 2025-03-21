@@ -1,6 +1,7 @@
 const { validationResult } = require("express-validator");
 const userService = require("../services/user.service");
 const userModel = require("../models/user.model");
+const blackListTokenModel = require("../models/blacklistToken.model");
 const { ApiResponse } = require("../utils/ApiResponse");
 const ApiError = require("../utils/ApiError");
 const asyncHandler = require("../utils/asyncHandler");
@@ -55,7 +56,27 @@ module.exports.loginUser = asyncHandler(async (req, res) => {
   }
 
   const token = user.generateAuthToken();
+  // ✅ Secure cookie settings
+  res.cookie("token", token, {
+    httpOnly: true, // Prevents XSS attacks
+    secure: process.env.NODE_ENV === "production", // Set to `true` in production
+    sameSite: "strict", // Protects against CSRF
+  });
   return res
     .status(200)
     .json(new ApiResponse(200, "User Logged In", { token, user }));
+});
+
+//User Profile
+module.exports.getUserProfile = asyncHandler(async (req, res) => {
+  const user = req.user;
+  return res.status(200).json(new ApiResponse(200, "User Profile", user));
+});
+
+//Logout User
+module.exports.logout = asyncHandler(async (req, res) => {
+  res.clearCookie("token");
+  const token = req.cookies.token || req.headers.authorization.split(" ")[1];
+  await blackListTokenModel.create({ token });
+  return res.status(200).json(new ApiResponse(200, "Logout Successfull"));
 });

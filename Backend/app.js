@@ -5,12 +5,21 @@ const cors = require("cors");
 const connectToDB = require("./db/db");
 const app = express();
 const errorHandler = require("./utils/errorHandler");
+const cookieParser = require("cookie-parser");
+
 // Route Imports
 const userRoutes = require("./routes/user.route");
 
 connectToDB();
 // Cors
-app.use(cors());
+app.use(cookieParser());
+// app.use(cors());
+app.use(
+  cors({
+    origin: process.env.FRONTEND_URL || "http://localhost:3000", // Your frontend
+    credentials: true, // ✅ Allow cookies to be sent
+  }),
+);
 app.use(express.json()); // Parses JSON request body
 app.use(express.urlencoded({ extended: true })); // Parses URL-encoded data
 
