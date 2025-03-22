@@ -1,4 +1,5 @@
 const mongoose = require("mongoose");
+
 const blacklistTokenSchema = new mongoose.Schema({
   token: {
     type: String,
@@ -12,4 +13,9 @@ const blacklistTokenSchema = new mongoose.Schema({
   },
 });
 
-module.exports = mongoose.model("BlacklistToken", blacklistTokenSchema);
+// Prevent model overwrite error
+const BlacklistToken =
+  mongoose.models.BlacklistToken ||
+  mongoose.model("BlacklistToken", blacklistTokenSchema);
+
+module.exports = BlacklistToken;
