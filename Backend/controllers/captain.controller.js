@@ -53,13 +53,11 @@ module.exports.loginCaptain = asyncHandler(async (req, res) => {
   const { email, password } = req.body;
 
   const captain = await captainModel.findOne({ email }).select("+password");
-  console.log({ captain });
   if (!captain) {
     throw new ApiError(401, "Invalid Email Or Password");
   }
 
   const isPasswordMatch = await captain.comparePassword(password);
-  console.log({ isPasswordMatch });
   if (!isPasswordMatch) {
     throw new ApiError(401, "Invalid Email Or Password");
   }
