@@ -8,7 +8,8 @@ const errorHandler = require("./utils/errorHandler");
 const cookieParser = require("cookie-parser");
 
 // Route Imports
-const userRoutes = require("./routes/user.route");
+const userRoutes = require("./routes/user.routes");
+const captainRoutes = require("./routes/captain.routes");
 
 connectToDB();
 // Cors
@@ -28,6 +29,7 @@ app.get("/", (req, res) => {
 });
 
 app.use("/users", userRoutes);
+app.use("/captains", captainRoutes);
 
 /* Always should be below every route declaration
    Handle the error code & pass the error efficiently */
